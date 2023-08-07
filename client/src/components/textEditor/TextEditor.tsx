@@ -11,6 +11,8 @@ import { io } from 'socket.io-client';
 
 import type { Socket } from 'socket.io-client';
 
+const SAVE_INTERVAL_MS = 2000;
+
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
@@ -23,10 +25,38 @@ const TOOLBAR_OPTIONS = [
   ['clean'],
 ];
 
-const TextEditor = () => {
-  const [socket, setSocket] = useState<Socket>();
+type DocumentId = {
+  documentId: string;
+};
 
+const TextEditor = (props: DocumentId) => {
+  const { documentId } = props;
+
+  const [socket, setSocket] = useState<Socket>();
   const [quill, setQuill] = useState<any>();
+
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+
+    socket.once('load-document', (document) => {
+      quill.setContents(document);
+      quill.enable();
+    });
+
+    socket.emit('get-document', documentId);
+  }, [socket, quill, documentId]);
+
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+
+    const interval = setInterval(() => {
+      socket.emit('save-document', quill.getContents());
+    }, SAVE_INTERVAL_MS);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [socket, quill]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;

@@ -1,9 +1,8 @@
-import TextEditor from '@/components/textEditor/TextEditor';
+import { redirect } from 'next/navigation';
+
+import { v4 as uuidV4 } from 'uuid';
 
 export default function Home() {
-  return (
-    <div>
-      <TextEditor />
-    </div>
-  );
+  redirect(`/document/${uuidV4()}`);
+  return <div>Home page</div>;
 }
