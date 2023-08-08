@@ -18,6 +18,8 @@ const io = require('socket.io')(3001, {
 const defaultValue = '';
 
 io.on('connection', (socket: Socket) => {
+  console.log('connected');
+
   socket.on('get-document', async (documentId) => {
     const document = await findOrCreateDocument(documentId);
 
@@ -29,9 +31,22 @@ io.on('connection', (socket: Socket) => {
       socket.broadcast.to(documentId).emit('receive-changes', delta);
     });
 
-    socket.on('save-document', async (data) => {
-      await DocumentModel.findByIdAndUpdate(documentId, { data });
+    socket.on('save-document', async (data, email) => {
+      let insertData = {
+        data,
+        email,
+      };
+
+      await DocumentModel.findByIdAndUpdate(documentId, insertData);
     });
+  });
+
+  socket.on('get-recent-document', async (email) => {
+    const data = await DocumentModel.find({
+      email: { $all: [email] },
+    });
+
+    socket.emit('load-recent-document', data);
   });
 });
 
