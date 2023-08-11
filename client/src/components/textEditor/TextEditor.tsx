@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 import { io } from 'socket.io-client';
 import type { Socket } from 'socket.io-client';
 
-import * as htmlToImage from 'html-to-image';
+import { uploadToCloudinary } from '@/features/cloudinary/cloudinary';
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -42,42 +42,36 @@ const TextEditor = (props: DocumentId) => {
   const [socket, setSocket] = useState<Socket>();
   const [quill, setQuill] = useState<any>();
 
-  const editorsdw: HTMLElement = document.getElementsByClassName('ql-editor');
-
-  const takeScreenShot = async (node: any) => {
-    console.log(editorsdw[0]);
-
-    const dataURI = await htmlToImage.toJpeg(editorsdw[0]);
-    return dataURI;
-  };
-
-  const download = (image, fileName) => {
-    // const a = document.createElement('a');
-    // a.href = image;
-    // a.download = fileName;
-    // a.click();
-
-    console.log('called');
-  };
+  const [imageLink, setImageLink] = useState<string[]>([]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
 
     socket.once('load-document', (document) => {
-      quill.setContents(document);
+      quill.setContents(document?.data);
       quill.enable();
-
-      takeScreenShot(editorsdw).then(download);
     });
 
     socket.emit('get-document', documentId);
+
+    return () => {
+      uploadToCloudinary(setImageLink);
+    };
   }, [socket, quill, documentId]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
 
+    let data = {
+      quillData: quill.getContents(),
+      email,
+      documentScreenShot: imageLink,
+    };
+
+    console.log(imageLink);
+
     const interval = setInterval(() => {
-      socket.emit('save-document', quill.getContents(), email);
+      socket.emit('save-document', data);
     }, SAVE_INTERVAL_MS);
 
     return () => {

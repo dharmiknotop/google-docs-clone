@@ -4,12 +4,31 @@ interface IDocument {
   _id: string;
   data: string;
   email: string;
+  documentScreenShot: string;
 }
 
 const Document = new Schema<IDocument>({
-  _id: String,
+  _id: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    // required: true,
+  },
+
+  documentScreenShot: {
+    public_id: {
+      type: String,
+      //   required: true,
+    },
+    url: {
+      type: String,
+      //   required: true,
+    },
+  },
+
   data: Object,
-  email: String,
 });
 
 export default mongoose.model('Document', Document);

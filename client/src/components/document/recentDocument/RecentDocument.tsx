@@ -91,9 +91,9 @@ const RecentDocument = () => {
             return (
               <div className="cursor-pointer mb-6 mt-4 ml-10" key={item._id}>
                 <div className="flex">
-                  <Link href="/Editer">
+                  <Link href={`/document/${item._id}`}>
                     <img
-                      src={'./images/docs-logo.png'}
+                      src={item?.documentScreenShot?.url}
                       alt=""
                       className="w-48"
                     />

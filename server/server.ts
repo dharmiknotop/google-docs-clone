@@ -25,17 +25,20 @@ io.on('connection', (socket: Socket) => {
 
     socket.join(documentId);
 
-    socket.emit('load-document', document?.data);
+    socket.emit('load-document', document);
 
     socket.on('send-changes', (delta) => {
       socket.broadcast.to(documentId).emit('receive-changes', delta);
     });
 
-    socket.on('save-document', async (data, email) => {
+    socket.on('save-document', async (data) => {
       let insertData = {
-        data,
-        email,
+        data: data.quillData,
+        email: data.quill,
+        documentScreenShot: data.documentScreenShot,
       };
+
+      console.log(data);
 
       await DocumentModel.findByIdAndUpdate(documentId, insertData);
     });
