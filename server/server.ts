@@ -34,7 +34,7 @@ io.on('connection', (socket: Socket) => {
     socket.on('save-document', async (data) => {
       let insertData = {
         data: data.quillData,
-        email: data.quill,
+        email: data.email,
         documentScreenShot: data.documentScreenShot,
       };
 

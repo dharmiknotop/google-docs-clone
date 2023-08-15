@@ -12,7 +12,10 @@ import { useSession } from 'next-auth/react';
 import { io } from 'socket.io-client';
 import type { Socket } from 'socket.io-client';
 
-import { uploadToCloudinary } from '@/features/cloudinary/cloudinary';
+import {
+  uploadToCloudinary,
+  updateCloudinaryImage,
+} from '@/features/cloudinary/cloudinary';
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -32,6 +35,13 @@ type DocumentId = {
   documentId: string;
 };
 
+type Doc = {
+  _id: number;
+  email: string;
+  data: object;
+  documentScreenShot: object | string;
+};
+
 const TextEditor = (props: DocumentId) => {
   const { documentId } = props;
 
@@ -42,42 +52,51 @@ const TextEditor = (props: DocumentId) => {
   const [socket, setSocket] = useState<Socket>();
   const [quill, setQuill] = useState<any>();
 
-  const [imageLink, setImageLink] = useState<string[]>([]);
+  const [imageLink, setImageLink] = useState<string>('');
 
-  useEffect(() => {
+  const [doc, setDoc] = useState<Doc>({
+    _id: 0,
+    email: '',
+    data: {},
+    documentScreenShot: {
+      public_id: '',
+    },
+  });
+
+  let getDocument = () => {
     if (socket == null || quill == null) return;
 
     socket.once('load-document', (document) => {
       quill.setContents(document?.data);
       quill.enable();
+
+      setDoc(document);
     });
 
     socket.emit('get-document', documentId);
+  };
 
-    return () => {
-      uploadToCloudinary(setImageLink);
-    };
+  useEffect(() => {
+    getDocument();
   }, [socket, quill, documentId]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
 
-    let data = {
-      quillData: quill.getContents(),
-      email,
-      documentScreenShot: imageLink,
-    };
-
-    console.log(imageLink);
-
     const interval = setInterval(() => {
+      let data = {
+        quillData: quill.getContents(),
+        email,
+        documentScreenShot: imageLink,
+      };
+
       socket.emit('save-document', data);
     }, SAVE_INTERVAL_MS);
 
     return () => {
       clearInterval(interval);
     };
-  }, [socket, quill, email]);
+  }, [socket, quill, email, imageLink]);
 
   useEffect(() => {
     if (socket == null || quill == null) return;
@@ -101,8 +120,6 @@ const TextEditor = (props: DocumentId) => {
       oldDelta: Array<string>,
       source: string
     ) => {
-      console.log(typeof source);
-
       if (source !== 'user') return;
       socket.emit('send-changes', delta);
     };
@@ -122,6 +139,20 @@ const TextEditor = (props: DocumentId) => {
       s.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (doc._id === 0) return;
+
+    console.log(doc);
+
+    console.log(doc.documentScreenShot !== '');
+
+    if (doc.documentScreenShot !== '') {
+      updateCloudinaryImage(doc.documentScreenShot?.public_id, setImageLink);
+    } else {
+      uploadToCloudinary(setImageLink);
+    }
+  }, [doc]);
 
   const wrapperRef = useCallback((wrapper: any) => {
     if (wrapper == null) return;

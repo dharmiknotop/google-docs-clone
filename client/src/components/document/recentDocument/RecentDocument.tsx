@@ -49,6 +49,8 @@ const RecentDocument = () => {
 
   useEffect(() => {
     getRecentDocuments();
+
+    console.log(document.getElementsByClassName('ql-editor'));
   }, [socket]);
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const RecentDocument = () => {
           <h1>Recent documents</h1>
         </div>
 
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <div>
             <img
               src={'./images/docs-logo.png'}
@@ -82,22 +84,26 @@ const RecentDocument = () => {
               className="h-5 cursor-pointer"
             />
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className="flex">
+      <div className="flex flex-wrap">
         {recentDocument &&
           recentDocument.map((item) => {
+            console.log('recent document', item);
+
             return (
-              <div className="cursor-pointer mb-6 mt-4 ml-10" key={item._id}>
+              <Link
+                href={`/document/${item._id}`}
+                className="cursor-pointer mb-6 mt-4 ml-10"
+                key={item._id}
+              >
                 <div className="flex">
-                  <Link href={`/document/${item._id}`}>
-                    <img
-                      src={item?.documentScreenShot?.url}
-                      alt=""
-                      className="w-48"
-                    />
-                  </Link>
+                  <img
+                    src={item?.documentScreenShot?.url}
+                    alt=""
+                    className="w-48"
+                  />
                 </div>
                 <div className="ml-1">
                   <p>documents</p>
@@ -123,7 +129,7 @@ const RecentDocument = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
       </div>

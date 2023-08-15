@@ -5,7 +5,6 @@ const Document = ({ params }) => {
 
   return (
     <div>
-      sdf
       <TextEditor documentId={id} />
     </div>
   );
