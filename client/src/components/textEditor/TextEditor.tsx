@@ -143,10 +143,6 @@ const TextEditor = (props: DocumentId) => {
   useEffect(() => {
     if (doc._id === 0) return;
 
-    console.log(doc);
-
-    console.log(doc.documentScreenShot !== '');
-
     if (doc.documentScreenShot !== '') {
       updateCloudinaryImage(doc.documentScreenShot?.public_id, setImageLink);
     } else {
