@@ -87,7 +87,7 @@ const RecentDocument = () => {
         </div> */}
       </div>
 
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap pl-14">
         {recentDocument &&
           recentDocument.map((item) => {
             console.log('recent document', item);
@@ -95,7 +95,7 @@ const RecentDocument = () => {
             return (
               <Link
                 href={`/document/${item._id}`}
-                className="cursor-pointer mb-6 mt-4 ml-10"
+                className="cursor-pointer mb-6 mt-4 mr-10"
                 key={item._id}
               >
                 <div className="flex">
@@ -105,11 +105,9 @@ const RecentDocument = () => {
                     className="w-48"
                   />
                 </div>
-                <div className="ml-1">
-                  <p>documents</p>
-                </div>
-                <div className="flex gap-10">
-                  <div className="flex">
+                <p className="mt-1">documents</p>
+                <div className="flex justify-between mt-1">
+                  <div className="flex align-center">
                     <div>
                       <img
                         src={'./images/docs-logo.png'}

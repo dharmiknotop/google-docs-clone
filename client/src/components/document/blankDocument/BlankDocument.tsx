@@ -5,12 +5,12 @@ const BlankDocument = () => {
   return (
     <div>
       <div className="h-80 bg-gray-100">
-        <div className="flex pl-20 pr-20 pt-10 justify-between card">
+        <div className="flex pl-14 pr-20 pt-10 justify-between card">
           <div className="flex">
             <p>Start a new document</p>
           </div>
         </div>
-        <div className="flex pl-20 pr-20 pt-2 justify-between card-body">
+        <div className="flex pl-14 pr-20 pt-2 justify-between card-body">
           <Link href={`/document/${uuidV4()}`}>
             <div className="flex img-div">
               <img
