@@ -6,7 +6,9 @@ export type Doc = {
   _id: number;
   email: string;
   data: object;
-  documentScreenShot: object | string;
+  documentScreenShot: {
+    public_id?: string;
+  };
 };
 
 export const TOOLBAR_OPTIONS = [

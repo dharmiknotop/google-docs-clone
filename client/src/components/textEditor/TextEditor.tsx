@@ -31,7 +31,7 @@ const TextEditor = (props: DocumentId) => {
   const [socket, setSocket] = useState<Socket>();
   const [quill, setQuill] = useState<any>();
 
-  const [imageLink, setImageLink] = useState<string>('');
+  const [imageLink, setImageLink] = useState<object>({});
 
   const [doc, setDoc] = useState<Doc>({
     _id: 0,
@@ -122,10 +122,12 @@ const TextEditor = (props: DocumentId) => {
   useEffect(() => {
     if (doc._id === 0) return;
 
-    if (doc.documentScreenShot !== '') {
-      updateCloudinaryImage(doc.documentScreenShot?.public_id, setImageLink);
-    } else {
+    console.log(doc);
+
+    if (Object.keys(doc.documentScreenShot).length === 0) {
       uploadToCloudinary(setImageLink);
+    } else {
+      updateCloudinaryImage(doc.documentScreenShot?.public_id, setImageLink);
     }
   }, [doc]);
 

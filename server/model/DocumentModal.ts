@@ -7,28 +7,32 @@ interface IDocument {
   documentScreenShot: string;
 }
 
-const Document = new Schema<IDocument>({
-  _id: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    // required: true,
-  },
-
-  documentScreenShot: {
-    public_id: {
+const Document = new Schema<IDocument>(
+  {
+    _id: {
       type: String,
-      //   required: true,
+      required: true,
     },
-    url: {
+    email: {
       type: String,
-      //   required: true,
+      // required: true,
     },
-  },
 
-  data: Object,
-});
+    documentScreenShot: {
+      public_id: {
+        type: String,
+        //   required: true,
+        default: {},
+      },
+      url: {
+        type: String,
+        //   required: true,
+      },
+    },
+
+    data: Object,
+  },
+  { minimize: false }
+);
 
 export default mongoose.model('Document', Document);

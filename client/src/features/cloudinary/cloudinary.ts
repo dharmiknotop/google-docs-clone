@@ -56,7 +56,9 @@ export const updateCloudinaryImage = async (
 
     const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/destroy`;
 
-    await axios.post(url, data);
+    const res: any = await axios.post(url, data);
+
+    if (res.data.result === 'not found') return;
 
     uploadToCloudinary(setImageLink);
   } catch (error) {
