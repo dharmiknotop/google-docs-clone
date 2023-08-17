@@ -89,7 +89,7 @@ const RecentDocument = () => {
 
       <div className="flex flex-wrap pl-14">
         {recentDocument &&
-          recentDocument.map((item) => {
+          recentDocument.map((item: any) => {
             console.log('recent document', item);
 
             return (

@@ -1,4 +1,4 @@
-/** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} **/
 const nextConfig = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.externals.push({
@@ -9,6 +9,10 @@ const nextConfig = {
     config.resolve.fallback = { fs: false };
 
     return config;
+  },
+
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

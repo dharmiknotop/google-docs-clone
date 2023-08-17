@@ -1,7 +1,7 @@
 import TextEditor from '@/components/textEditor/TextEditor';
 
-const Document = ({ params }) => {
-  const { id } = params;
+const Document = (props: any) => {
+  const { id } = props.params;
 
   return (
     <div>

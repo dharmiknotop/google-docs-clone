@@ -17,30 +17,9 @@ import {
   updateCloudinaryImage,
 } from '@/features/cloudinary/cloudinary';
 
+import { Doc, DocumentId, TOOLBAR_OPTIONS } from './types';
+
 const SAVE_INTERVAL_MS = 2000;
-
-const TOOLBAR_OPTIONS = [
-  [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  [{ font: [] }],
-  [{ list: 'ordered' }, { list: 'bullet' }],
-  ['bold', 'italic', 'underline'],
-  [{ color: [] }, { background: [] }],
-  [{ script: 'sub' }, { script: 'super' }],
-  [{ align: [] }],
-  ['image', 'blockquote', 'code-block'],
-  ['clean'],
-];
-
-type DocumentId = {
-  documentId: string;
-};
-
-type Doc = {
-  _id: number;
-  email: string;
-  data: object;
-  documentScreenShot: object | string;
-};
 
 const TextEditor = (props: DocumentId) => {
   const { documentId } = props;
