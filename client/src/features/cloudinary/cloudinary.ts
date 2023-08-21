@@ -12,8 +12,9 @@ export const uploadToCloudinary = async (setImageLink: any) => {
     //taking the screen shot of the content in the document
 
     const currentDocument = document.getElementsByClassName('ql-editor');
-
     const dataURI = await htmlToImage.toJpeg(currentDocument[0] as HTMLElement);
+
+    console.log(currentDocument);
 
     const formData: any = new FormData();
 

@@ -7,14 +7,14 @@ interface LoginProps {}
 
 const Login: React.FC<LoginProps> = () => {
   return (
-    <IsNotAuth>
+    <div>
       <Head>
         <title>Login</title>
       </Head>
+      <IsNotAuth></IsNotAuth>
       <Navbar />
-
       <LoginPage />
-    </IsNotAuth>
+    </div>
   );
 };
 

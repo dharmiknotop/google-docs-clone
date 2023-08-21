@@ -102,7 +102,7 @@ const RecentDocument = () => {
                   <img
                     src={item?.documentScreenShot?.url}
                     alt=""
-                    className="w-48"
+                    className="w-48 h-64 border border-600 bg-white"
                   />
                 </div>
                 <p className="mt-1">documents</p>

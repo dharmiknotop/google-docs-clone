@@ -11,12 +11,14 @@ const IsNotAuth: React.FC<IsNotAuthProps> = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log(session.status);
+
     if (session.status === 'authenticated') {
       router.replace('/document/');
     }
   }, [session, router]);
 
-  return <></>;
+  return <div></div>;
 };
 
 export default IsNotAuth;

@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useCallback, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 
 import './textEditor.css';
 
-import { useSession } from 'next-auth/react';
+import { configKeys } from '@/config/keys';
 
 import { io } from 'socket.io-client';
 import type { Socket } from 'socket.io-client';
@@ -111,7 +112,8 @@ const TextEditor = (props: DocumentId) => {
   }, [socket, quill]);
 
   useEffect(() => {
-    const s = io('http://localhost:3001/');
+    const s = io(`${configKeys.SERVER_URL}`);
+
     setSocket(s);
 
     return () => {
@@ -122,7 +124,7 @@ const TextEditor = (props: DocumentId) => {
   useEffect(() => {
     if (doc._id === 0) return;
 
-    console.log(doc);
+    console.log(quill.root);
 
     if (Object.keys(doc.documentScreenShot).length === 0) {
       uploadToCloudinary(setImageLink);
